@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { memo, useState } from 'react';
 import { Button, Modal, Typography, Space, message } from 'antd';
 import { useAsyncFn, useStateWithHistory } from 'react-use';

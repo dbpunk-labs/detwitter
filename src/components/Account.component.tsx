@@ -4,7 +4,7 @@ import { UserOutlined } from '@ant-design/icons';
 import * as db3 from '../db3';
 import { keyring } from '@polkadot/ui-keyring';
 import { useRecoilValue, useRecoilState } from 'recoil';
-import { allAccountAtom, ownerAddressAtom } from '../state';
+import { accountNameAtom, allAccountAtom, ownerAddressAtom } from '../state';
 import _ from 'lodash';
 
 const { Option } = Select;
@@ -13,7 +13,7 @@ function Main() {
     const [ownerAddress, setOwerAddress] = useRecoilState(ownerAddressAtom);
     const [visible, setVisible] = useState(!ownerAddress);
     const allAccount = useRecoilValue(allAccountAtom);
-    const [accountName, setAccountName] = useState('');
+    const [accountName, setAccountName] = useRecoilState(accountNameAtom);
 
     useEffect(() => {
         setVisible(!ownerAddress);
@@ -21,7 +21,8 @@ function Main() {
 
     useEffect(() => {
         if (ownerAddress && allAccount.length) {
-            setAccountName(_.find(allAccount, (item: any) => item.value === ownerAddress).label);
+            const accountName = _.find(allAccount, (item: any) => item.value === ownerAddress).label;
+            setAccountName(accountName);
         }
     }, [ownerAddress, allAccount]);
 

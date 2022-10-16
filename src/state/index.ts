@@ -32,6 +32,11 @@ export const ownerAddressAtom = atom<string>({
     ],
 });
 
+export const accountNameAtom = atom<string>({
+    key: 'accountNameAtom',
+    default: null,
+});
+
 export const allAccountAtom = atom({
     key: 'allAccountAtom',
     default: [],
@@ -46,7 +51,7 @@ export const allUserSelector = selector({
             method: 'get_public_user',
             args: [],
         });
-        return data.data;
+        return _.filter(data.data, item => item.user_addr !== ownerAddress);
     },
 });
 export const followingTwitterSelector = selector({
@@ -58,7 +63,6 @@ export const followingTwitterSelector = selector({
             method: 'get_following_tweets',
             args: [3],
         });
-        console.log(data);
         return data.data;
     },
 });
