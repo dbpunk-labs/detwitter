@@ -64,7 +64,7 @@ const Userhome: React.FC<{}> = memo(props => {
     const [twitterListState, loadTwitterList] = useAsyncFn(async () => {
         const { data } = await db3.callContract(ownerAddress, contractAddress, {
             method: 'get_following_tweets_with_addr',
-            args: [20, ownerAddress],
+            args: [20, ownerAddress, accountName],
         });
         console.log(data);
         return data;
@@ -72,8 +72,8 @@ const Userhome: React.FC<{}> = memo(props => {
 
     const [allUserState, loadAllUser] = useAsyncFn(async () => {
         const { data } = await db3.callContract(ownerAddress, contractAddress, {
-            method: 'get_public_user',
-            args: [],
+            method: 'get_public_user_with_addr',
+            args: [ownerAddress, 'my_detwitter'],
         });
         console.log(data.data);
         return _.filter(data.data, item => item.user_addr !== ownerAddress);
@@ -103,7 +103,7 @@ const Userhome: React.FC<{}> = memo(props => {
                                             onClick={() => setFollowingVisible(true)}
                                         ></Button>
                                     }
-                                    title='Following list'
+                                    title='Following List'
                                     bordered={false}
                                     style={{ width: 300 }}
                                 >
@@ -126,7 +126,7 @@ const Userhome: React.FC<{}> = memo(props => {
                                             onClick={() => setFollowerVisible(true)}
                                         ></Button>
                                     }
-                                    title='follower list'
+                                    title='Follower List'
                                     bordered={false}
                                     style={{ width: 300 }}
                                 >
