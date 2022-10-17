@@ -32,12 +32,12 @@ function Main() {
     }
     return (
         <>
-            <div style={{ color: '#fff' }}>
+            {/* <div style={{ color: '#fff' }}>
                 <Space>
                     {accountName}
                     <Avatar style={{ backgroundColor: '#87d068' }} icon={<UserOutlined />} />
                 </Space>
-            </div>
+            </div> */}
             <Modal
                 open={visible}
                 footer={null}

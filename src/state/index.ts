@@ -10,9 +10,24 @@ export const contractAddressAtom = atom<string>({
     default: '5DAAnrj7VHTznn2AWBemMuyBwZWs6FNFjdyVXUeYum3PTXFy',
 });
 
+export const contractEllipsisAddressAtom = atom<string>({
+    key: 'contractEllipsisAddressAtom',
+    default: '5D...TXFy',
+});
+
 export const delegateAddressAtom = atom({
     key: 'delegateAddressAtom',
     default: '5DAAnrj7VHTznn2AWBemMuyBwZWs6FNFjdyVXUeYum3PTXFy',
+});
+
+export const appAddressAtom = atom({
+    key: 'appAddressAtom',
+    default: '5CiPPseXPECbkjWCa6MnjNokrgYjMqmKndv2rSnekmSK2DjL',
+});
+
+export const appEllipsisAddressAtom = atom({
+    key: 'appEllipsAddressAtom',
+    default: '5C...2DjL',
 });
 
 export const ownerAddressAtom = atom<string>({
@@ -35,6 +50,24 @@ export const ownerAddressAtom = atom<string>({
 export const accountNameAtom = atom<string>({
     key: 'accountNameAtom',
     default: null,
+});
+
+export const twitterNameAtom = atom<string>({
+    key: 'twitterNameAtom',
+    default: selector({
+        key: 'twitterNameAtom/default',
+        get: () => {
+            return localStorage.getItem('dtwitter_account_name');
+        },
+    }),
+    effects: [
+        ({ onSet }) => {
+            onSet(value => {
+                localStorage.setItem('dtwitter_account_name', value);
+                localStorage.setItem('dtwitter_isRegister', '1');
+            });
+        },
+    ],
 });
 
 export const allAccountAtom = atom({

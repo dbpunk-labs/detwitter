@@ -17,11 +17,12 @@ const { Header, Content, Footer } = Layout;
 function App() {
     return (
         <div className='App'>
-            <Layout className='layout'>
-                <Header className='header'>
+            <Account />
+            <Layout className='layout' style={{ height: '100%' }}>
+                {/* <Header className='header'>
                     <div className='logo'>Dtwitter</div>
                     <Account />
-                </Header>
+                </Header> */}
                 <Content style={{ padding: '20px 0' }}>
                     <Router>
                         <Routes>
@@ -31,7 +32,7 @@ function App() {
                         </Routes>
                     </Router>
                 </Content>
-                <Footer style={{ textAlign: 'center' }}>合约地址</Footer>
+                {/* <Footer style={{ textAlign: 'center' }}>合约地址</Footer> */}
             </Layout>
         </div>
     );

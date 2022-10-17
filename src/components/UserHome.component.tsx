@@ -1,12 +1,14 @@
 // @ts-nocheck
 import React, { memo, useState } from 'react';
-import { Button, Space, List, Avatar, Skeleton, Input, message, Card, Spin, Modal, Typography } from 'antd';
+import { Button, Space, List, Avatar, Input, message, Card, Spin, Modal, Typography } from 'antd';
 import { ReloadOutlined } from '@ant-design/icons';
-import { useRecoilCallback, useRecoilValue, useRecoilValueLoadable } from 'recoil';
-import { accountNameAtom, allUserSelector, contractAddressAtom, ownerAddressAtom } from '../state';
+import { useRecoilValue } from 'recoil';
+import { accountNameAtom, allUserSelector, contractAddressAtom, ownerAddressAtom, twitterNameAtom } from '../state';
 import { useAsyncFn } from 'react-use';
 import * as db3 from '../db3';
 import _ from 'lodash';
+import Contract from './Contract.component';
+import moment from 'moment';
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -14,12 +16,14 @@ const Userhome: React.FC<{}> = memo(props => {
     const ownerAddress = useRecoilValue(ownerAddressAtom);
     const contractAddress = useRecoilValue(contractAddressAtom);
     const accountName = useRecoilValue(accountNameAtom);
+    const twitterName = useRecoilValue(twitterNameAtom);
     const [userContent, setUserContent] = useState('');
 
     const [postTwitterState, postTwitter] = useAsyncFn(async () => {
         try {
+            const time = moment().format('YYYY-MM-DD hh:mm:ss');
             const { status, msg } = await db3.runSqlByOwner(
-                `insert into tweets values(${(Date.now() / 1000).toFixed()}, '2022-10-11 12:24:00', '${userContent}');`,
+                `insert into tweets values(${(Date.now() / 1000).toFixed()}, '${time}', '${userContent}');`,
             );
             if (status === 0) {
                 message.success('The operation succeeded!');
@@ -36,7 +40,6 @@ const Userhome: React.FC<{}> = memo(props => {
     const [followingState, loadFollowing] = useAsyncFn(async () => {
         const { data } = await db3.runSqlByOwner('select * from following;');
         setFollowingList(data);
-        console.log(data);
         return data;
     });
     const [followerState, loadFollower] = useAsyncFn(async () => {
@@ -44,6 +47,8 @@ const Userhome: React.FC<{}> = memo(props => {
         setFollowerList(data);
         return data;
     });
+
+    const [followingMap, setFollowingMap] = useState({});
     const [followOneArgs, setFollowOneArgs] = useState<any[]>([]);
     const [followOneState, followOne] = useAsyncFn(async () => {
         try {
@@ -52,6 +57,7 @@ const Userhome: React.FC<{}> = memo(props => {
                 args: followOneArgs,
             });
             if (status === 0) {
+                setFollowingMap({ ...followingMap, [followOneArgs[1]]: true });
                 message.success('The operation succeeded!');
             } else {
                 message.error(msg);
@@ -66,7 +72,6 @@ const Userhome: React.FC<{}> = memo(props => {
             method: 'get_following_tweets_with_addr',
             args: [20, ownerAddress, accountName],
         });
-        console.log(data);
         return data;
     });
 
@@ -75,8 +80,13 @@ const Userhome: React.FC<{}> = memo(props => {
             method: 'get_public_user_with_addr',
             args: [ownerAddress, 'my_detwitter'],
         });
-        console.log(data.data);
-        return _.filter(data.data, item => item.user_addr !== ownerAddress);
+        const list = _.filter(data.data, item => item.user_addr !== ownerAddress);
+        const following = {};
+        _.each(list, item => {
+            following[item.user_addr] = item.is_following;
+        });
+        setFollowingMap(following);
+        return list;
     });
 
     const [globalUserVisible, setGlobalUserVisible] = useState(false);
@@ -95,7 +105,9 @@ const Userhome: React.FC<{}> = memo(props => {
                     <Space align='start'>
                         <Spin spinning={followingState.loading}>
                             <div className='following'>
-                                <div className='follow-total'>{`following ${followingList.length}`}</div>
+                                <div className='follow-total'>
+                                    following <Text strong>{followingList.length}</Text>
+                                </div>
                                 <Card
                                     extra={
                                         <Button
@@ -118,7 +130,9 @@ const Userhome: React.FC<{}> = memo(props => {
                         </Spin>
                         <Spin spinning={followerState.loading}>
                             <div className='follower'>
-                                <div className='follow-total'>{`follower ${followerList.length}`}</div>
+                                <div className='follow-total'>
+                                    follower <Text strong>{followerList.length}</Text>
+                                </div>
                                 <Card
                                     extra={
                                         <Button
@@ -157,18 +171,20 @@ const Userhome: React.FC<{}> = memo(props => {
                                             <>
                                                 <List.Item.Meta title={<a>{item.user_name}</a>} />
                                                 <Button
+                                                    style={{ width: 90 }}
                                                     type='primary'
+                                                    disabled={followingMap[item.user_addr]}
                                                     onClick={() => {
                                                         setFollowOneVisible(true);
                                                         setFollowOneArgs([
                                                             item.user_name,
                                                             item.user_addr,
                                                             ownerAddress,
-                                                            accountName,
+                                                            twitterName,
                                                         ]);
                                                     }}
                                                 >
-                                                    follow
+                                                    {followingMap[item.user_addr] ? 'following' : 'follow'}
                                                 </Button>
                                             </>
                                         </List.Item>
@@ -222,16 +238,7 @@ const Userhome: React.FC<{}> = memo(props => {
                 </div>
             </div>
             {/* global user */}
-            <Modal
-                style={{ right: 20, margin: 0, float: 'right' }}
-                width={350}
-                open={globalUserVisible}
-                onCancel={() => setGlobalUserVisible(false)}
-                title='DB3 network'
-                footer={null}
-                closable={false}
-                maskClosable={false}
-            >
+            <Contract visible={globalUserVisible} onCancel={setGlobalUserVisible}>
                 <Typography>
                     <Title>Sign message</Title>
                     <Paragraph>
@@ -254,12 +261,10 @@ const Userhome: React.FC<{}> = memo(props => {
                         <Button onClick={() => setGlobalUserVisible(false)}>No</Button>
                     </Space>
                 </div>
-            </Modal>
+            </Contract>
             {/* follow one */}
-            <Modal
-                style={{ right: 20, margin: 0, float: 'right' }}
-                width={350}
-                open={followOneVisible}
+            <Contract
+                visible={followOneVisible}
                 onCancel={() => setFollowOneVisible(false)}
                 title='DB3 network'
                 footer={null}
@@ -288,18 +293,9 @@ const Userhome: React.FC<{}> = memo(props => {
                         <Button onClick={() => setFollowOneVisible(false)}>No</Button>
                     </Space>
                 </div>
-            </Modal>
+            </Contract>
             {/* following */}
-            <Modal
-                style={{ right: 20, margin: 0, float: 'right' }}
-                width={350}
-                open={followingVisible}
-                onCancel={() => setFollowingVisible(false)}
-                title='DB3 network'
-                footer={null}
-                closable={false}
-                maskClosable={false}
-            >
+            <Contract visible={followingVisible} onCancel={() => setFollowingVisible(false)}>
                 <Typography>
                     <Title>Sign message</Title>
                     <Paragraph>
@@ -322,18 +318,9 @@ const Userhome: React.FC<{}> = memo(props => {
                         <Button onClick={() => setFollowingVisible(false)}>No</Button>
                     </Space>
                 </div>
-            </Modal>
+            </Contract>
             {/* follower */}
-            <Modal
-                style={{ right: 20, margin: 0, float: 'right' }}
-                width={350}
-                open={followerVisible}
-                onCancel={() => setFollowerVisible(false)}
-                title='DB3 network'
-                footer={null}
-                closable={false}
-                maskClosable={false}
-            >
+            <Contract visible={followerVisible} onCancel={() => setFollowerVisible(false)}>
                 <Typography>
                     <Title>Sign message</Title>
                     <Paragraph>
@@ -356,18 +343,9 @@ const Userhome: React.FC<{}> = memo(props => {
                         <Button onClick={() => setFollowerVisible(false)}>No</Button>
                     </Space>
                 </div>
-            </Modal>
+            </Contract>
             {/* following twitters */}
-            <Modal
-                style={{ right: 20, margin: 0, float: 'right' }}
-                width={350}
-                open={userTwittersVisible}
-                onCancel={() => setUserTwittersVisible(false)}
-                title='DB3 network'
-                footer={null}
-                closable={false}
-                maskClosable={false}
-            >
+            <Contract visible={userTwittersVisible} onCancel={() => setUserTwittersVisible(false)}>
                 <Typography>
                     <Title>Sign message</Title>
                     <Paragraph>
@@ -390,18 +368,9 @@ const Userhome: React.FC<{}> = memo(props => {
                         <Button onClick={() => setUserTwittersVisible(false)}>No</Button>
                     </Space>
                 </div>
-            </Modal>
+            </Contract>
             {/* publish twitter */}
-            <Modal
-                style={{ right: 20, margin: 0, float: 'right' }}
-                width={350}
-                open={publishTwitterVisible}
-                onCancel={() => setPublishTwitterVisible(false)}
-                title='DB3 network'
-                footer={null}
-                closable={false}
-                maskClosable={false}
-            >
+            <Contract visible={publishTwitterVisible} onCancel={() => setPublishTwitterVisible(false)}>
                 <Typography>
                     <Title>Sign message</Title>
                     <Paragraph>
@@ -424,7 +393,7 @@ const Userhome: React.FC<{}> = memo(props => {
                         <Button onClick={() => setPublishTwitterVisible(false)}>No</Button>
                     </Space>
                 </div>
-            </Modal>
+            </Contract>
         </>
     );
 });

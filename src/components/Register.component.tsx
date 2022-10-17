@@ -2,8 +2,8 @@
 import React, { memo, useState } from 'react';
 import { Modal, Form, Input, Radio, Button, message, Typography, Space } from 'antd';
 import { useAsyncFn } from 'react-use';
-import { contractAddressAtom, ownerAddressAtom } from '../state';
-import { useRecoilValue } from 'recoil';
+import { contractAddressAtom, ownerAddressAtom, twitterNameAtom } from '../state';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import * as db3 from '../db3';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,6 +12,7 @@ const { Title, Paragraph, Text, Link } = Typography;
 const Register: React.FC<{}> = memo(props => {
     const ownerAddress = useRecoilValue(ownerAddressAtom);
     const contractAddress = useRecoilValue(contractAddressAtom);
+    const setTwitterName = useSetRecoilState(twitterNameAtom);
     const navigate = useNavigate();
     const [registerState, registerFn] = useAsyncFn(
         async params => {
@@ -22,7 +23,7 @@ const Register: React.FC<{}> = memo(props => {
                 });
                 if (status === 0) {
                     message.success('Registration successful!');
-                    localStorage.setItem('dtwitter_isRegister', '1');
+                    setTwitterName(params[0]);
                     navigate('/user');
                 } else {
                     message.error(msg);
