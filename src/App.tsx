@@ -49,7 +49,7 @@ export default () => {
             node: import.meta.env.VITE_RPC,
         })
             .then(() => {
-                db3.loadAccounts('detwitter');
+                return db3.loadAccounts('detwitter');
             })
             .then(() => {
                 if (ownerAddress) {
