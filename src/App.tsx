@@ -19,7 +19,7 @@ function App() {
     return (
         <div className='App'>
             {/* <Account /> */}
-            <Layout className='layout' style={{ height: '100%' }}>
+            <Layout className='layout' style={{ height: '100%', background:'#ffffff' }}>
                 {/* <Header className='header'>
                     <div className='logo'>Dtwitter</div>
                     <Account />

@@ -83,9 +83,9 @@ const Register: React.FC<{}> = memo(props => {
                 <Typography>
                     <Title>Sign message</Title>
                     <Paragraph>
-                        You are going write into tables. The following sql and/or contracts will be executed:
+                        You are going to call method of contract@5DAAnrj7VHTznn2AWBemMuyBwZWs6FNFjdyVXUeYum3PTXFy
                     </Paragraph>
-                    <Paragraph code>contract.abcde5.twitter. registe_user(name: muran,gender:male)</Paragraph>
+                    <Paragraph code>registe_user(name,gender)</Paragraph>
                     <Text strong>Estimate Gas Usage: 1.5 db3</Text>
                 </Typography>
                 <div style={{ textAlign: 'center' }}>

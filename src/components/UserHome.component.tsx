@@ -106,7 +106,7 @@ const Userhome: React.FC<{}> = memo(props => {
                         <Spin spinning={followingState.loading}>
                             <div className='following'>
                                 <div className='follow-total'>
-                                    following <Text strong>{followingList.length}</Text>
+                                     following <Text strong>{followingList.length}</Text>
                                 </div>
                                 <Card
                                     extra={
@@ -117,7 +117,7 @@ const Userhome: React.FC<{}> = memo(props => {
                                     }
                                     title='Following List'
                                     bordered={false}
-                                    style={{ width: 300 }}
+                                    style={{ width: 300, background:'#F5F1F1' }}
                                 >
                                     {followingState.value?.map(item => (
                                         <div key={item.addr} style={{ marginBottom: 10 }}>
@@ -142,7 +142,7 @@ const Userhome: React.FC<{}> = memo(props => {
                                     }
                                     title='Follower List'
                                     bordered={false}
-                                    style={{ width: 300 }}
+                                    style={{ width: 300 , background:'#F5F1F1'}}
                                 >
                                     {followerState.value?.map(item => (
                                         <div key={item.addr} style={{ marginBottom: 10 }}>
@@ -158,7 +158,7 @@ const Userhome: React.FC<{}> = memo(props => {
                     <Card
                         extra={<Button icon={<ReloadOutlined />} onClick={() => setGlobalUserVisible(true)}></Button>}
                         title='Global User List'
-                        style={{ marginTop: 30 }}
+                        style={{ marginTop: 30 , background:'#F5F1F1'}}
                     >
                         <Spin spinning={followOneState.loading}>
                             <div className='global-user'>
@@ -169,7 +169,7 @@ const Userhome: React.FC<{}> = memo(props => {
                                     renderItem={item => (
                                         <List.Item>
                                             <>
-                                                <List.Item.Meta title={<a>{item.user_name}</a>} />
+                                                <List.Item.Meta title={<a>{item.user_name}@{item.user_addr}</a>} />
                                                 <Button
                                                     style={{ width: 90 }}
                                                     type='primary'
@@ -208,7 +208,7 @@ const Userhome: React.FC<{}> = memo(props => {
                             Public
                         </Button>
                         <Card
-                            style={{ marginTop: 20 }}
+                            style={{ marginTop: 20 , background:'#ECE7E7'}}
                             title='Content List'
                             extra={
                                 <Button icon={<ReloadOutlined />} onClick={() => setUserTwittersVisible(true)}></Button>
@@ -217,7 +217,7 @@ const Userhome: React.FC<{}> = memo(props => {
                             <Spin spinning={twitterListState.loading}>
                                 {twitterListState.value?.map(item => (
                                     <div key={item.addr}>
-                                        <Avatar /> {item.name}
+                                        <Avatar /> {item.name}@ {item.addr}
                                         <List
                                             style={{ paddingLeft: 30 }}
                                             itemLayout='horizontal'
@@ -225,7 +225,7 @@ const Userhome: React.FC<{}> = memo(props => {
                                             renderItem={item => (
                                                 <List.Item>
                                                     <>
-                                                        <List.Item.Meta title={<a>{item.tweet}</a>} />
+                                                        <List.Item.Meta title={<a>{item.ctime} {item.tweet}</a>} />
                                                     </>
                                                 </List.Item>
                                             )}
@@ -242,9 +242,9 @@ const Userhome: React.FC<{}> = memo(props => {
                 <Typography>
                     <Title>Sign message</Title>
                     <Paragraph>
-                        You are going query tables. The following sql and/or contracts will be executed:
+                        You are going query tables. The following method of contract@<code>5DAAnrj7VHTznn2AWBemMuyBwZWs6FNFjdyVXUeYum3PTXFy</code> will be executed:
                     </Paragraph>
-                    <Paragraph code>select `name`, `account` from abcde5.twitter.global_user_list limit 100</Paragraph>
+                    <Paragraph ><code>get_public_user()</code></Paragraph>
                     <Text strong>Estimate Gas Usage: 1.5 db3</Text>
                 </Typography>
                 <div style={{ textAlign: 'center' }}>
@@ -274,9 +274,9 @@ const Userhome: React.FC<{}> = memo(props => {
                 <Typography>
                     <Title>Sign message</Title>
                     <Paragraph>
-                        You are going write into tables. The following sql and/or contracts will be executed:
+                        You are going write into tables. the following method of contract@<code>5DAAnrj7VHTznn2AWBemMuyBwZWs6FNFjdyVXUeYum3PTXFy</code> will be called
                     </Paragraph>
-                    <Paragraph code>contract.abcde5.twitter.follow_one(name:Alice,adr:0x1adgbe)</Paragraph>
+                    <Paragraph code>follow_one(name,addr)</Paragraph>
                     <Text strong>Estimate Gas Usage: 0.1 db3</Text>
                 </Typography>
                 <div style={{ textAlign: 'center' }}>
@@ -299,9 +299,13 @@ const Userhome: React.FC<{}> = memo(props => {
                 <Typography>
                     <Title>Sign message</Title>
                     <Paragraph>
-                        You are going query tables. The following sql and/or contracts will be executed:
+                        You are going query tables. The following sql will be executed:
                     </Paragraph>
-                    <Paragraph code>select * from asefbs.twitter.table_you_following ;</Paragraph>
+                    <Paragraph >
+                    <code>
+                    select * from my_detwitter.following
+                    </code>
+                    </Paragraph>
                     <Text strong>Estimate Gas Usage: 0.1 db3</Text>
                 </Typography>
                 <div style={{ textAlign: 'center' }}>
@@ -324,9 +328,9 @@ const Userhome: React.FC<{}> = memo(props => {
                 <Typography>
                     <Title>Sign message</Title>
                     <Paragraph>
-                        You are going query tables. The following sql and/or contracts will be executed:
+                        You are going query tables. The following sql will be executed:
                     </Paragraph>
-                    <Paragraph code>select * from asefbs.twitter.table_you_follower ;</Paragraph>
+                    <Paragraph> <code>select * from my_detwitter.followme ;</code></Paragraph>
                     <Text strong>Estimate Gas Usage: 0.1 db3</Text>
                 </Typography>
                 <div style={{ textAlign: 'center' }}>
@@ -349,9 +353,9 @@ const Userhome: React.FC<{}> = memo(props => {
                 <Typography>
                     <Title>Sign message</Title>
                     <Paragraph>
-                        You are query data from tables. The following sql and/or contracts will be executed:
+                        You are query data from tables. The following contracts will be executed:
                     </Paragraph>
-                    <Paragraph code>contract.abcde5.twitter. get_content_from_following(page:1,size:10)</Paragraph>
+                    <Paragraph code>get_following_tweets(page,size)</Paragraph>
                     <Text strong>Estimate Gas Usage: 0.5 db3</Text>
                 </Typography>
                 <div style={{ textAlign: 'center' }}>
@@ -374,9 +378,9 @@ const Userhome: React.FC<{}> = memo(props => {
                 <Typography>
                     <Title>Sign message</Title>
                     <Paragraph>
-                        You are going write into tables. The following sql and/or contracts will be executed:
+                        You are going write into tables. The following sql will be executed:
                     </Paragraph>
-                    <Paragraph code>contract.abcde5.twitter. publish_twitter({`'${userContent}'`})</Paragraph>
+                    <Paragraph ><code>insert into my_detwitter.tweets values({`'${userContent}'`})</code></Paragraph>
                     <Text strong>Estimate Gas Usage: 0.5 db3</Text>
                 </Typography>
                 <div style={{ textAlign: 'center' }}>

@@ -1,3 +1,4 @@
+//@ts-nocheck 
 import React, { memo, useMemo, useState } from 'react';
 import { keyring } from '@polkadot/ui-keyring';
 import { createPair } from '@polkadot/keyring/pair';
