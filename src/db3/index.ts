@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { web3Accounts, web3Enable, web3FromSource } from '@polkadot/extension-dapp';
 import keyring, { keyring as Keyring } from '@polkadot/ui-keyring';
