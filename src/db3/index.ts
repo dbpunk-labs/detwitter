@@ -56,7 +56,7 @@ export async function loadAccounts(appName: string) {
         let allAccounts = await web3Accounts();
         allAccounts = allAccounts.map(({ address, meta }) => ({
             address,
-            meta: { ...meta },
+            meta: { ...meta, name: `${meta?.name} (${meta?.source})` },
         }));
         const { systemChain, systemChainType } = await retrieveChainInfo(api);
         const isDevelopment = systemChainType.isDevelopment || systemChainType.isLocal || isTestChain(systemChain);
@@ -64,6 +64,8 @@ export async function loadAccounts(appName: string) {
         const keyringOptions = Keyring.getPairs().map(account => ({
             key: account.address,
             value: account.address,
+            label: account.meta?.name.toUpperCase(),
+
         }));
         return keyringOptions;
     }
