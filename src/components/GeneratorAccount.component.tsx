@@ -55,7 +55,11 @@ const GeneratorAccount: React.FC<{}> = memo(props => {
             {!visibleAccountInfo && (
                 <>
                     <Space>
-                        <Input value={accountName} onChange={e => setAccountName(e.target.value)} />
+                        <Input
+                            placeholder='db3 account name'
+                            value={accountName}
+                            onChange={e => setAccountName(e.target.value)}
+                        />
                         <Button
                             type='primary'
                             onClick={() => generatorAccount()}
