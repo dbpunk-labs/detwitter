@@ -101,7 +101,10 @@ const Userhome: React.FC<{}> = memo(props => {
             <div className='user-home app-container'>
                 <div className='user-info'>
                     <div style={{ marginBottom: 7 }}>
-                        @{accountName} {ownerAddress}
+                     <Avatar style={{ backgroundColor: '#D9D9D9', verticalAlign: 'middle' }} size="large">
+                            {twitterName}
+                        </Avatar>
+                        @{ownerAddress}
                     </div>
                     <Space align='start'>
                         <Spin spinning={followingState.loading}>
@@ -123,7 +126,9 @@ const Userhome: React.FC<{}> = memo(props => {
                                     {followingState.value?.map(item => (
                                         <div key={item.addr} style={{ marginBottom: 10 }}>
                                             <Avatar />
-                                            <Text ellipsis={{ suffix: 10 }}>{item.name}</Text>
+                                            <Text style={{ maxWidth: 100 }} ellipsis>
+                                                {item.name}
+                                            </Text>
                                         </div>
                                     ))}
                                 </Card>
@@ -148,7 +153,9 @@ const Userhome: React.FC<{}> = memo(props => {
                                     {followerState.value?.map(item => (
                                         <div key={item.addr} style={{ marginBottom: 10 }}>
                                             <Avatar />
-                                            <Text ellipsis={{ suffix: 10 }}>{item.name}</Text>
+                                            <Text style={{ maxWidth: 100 }} ellipsis>
+                                                {item.name}
+                                            </Text>
                                         </div>
                                     ))}
                                 </Card>
@@ -171,7 +178,11 @@ const Userhome: React.FC<{}> = memo(props => {
                                         <List.Item>
                                             <>
                                                 <List.Item.Meta
-                                                    title={<Text ellipsis={{ suffix: 10 }}>{item.user_name}@{item.user_addr}</Text>}
+                                                    title={
+                                                        <Text style={{ maxWidth: 200 }} ellipsis>
+                                                            {item.user_name}@{item.user_addr}
+                                                        </Text>
+                                                    }
                                                 />
                                                 <Button
                                                     style={{ width: 90 }}
@@ -208,7 +219,7 @@ const Userhome: React.FC<{}> = memo(props => {
                             loading={postTwitterState.loading}
                             onClick={() => setPublishTwitterVisible(true)}
                         >
-                            Public
+                            Publish
                         </Button>
                         <Card
                             style={{ marginTop: 20 , background:'#ECE7E7'}}
@@ -220,7 +231,10 @@ const Userhome: React.FC<{}> = memo(props => {
                             <Spin spinning={twitterListState.loading}>
                                 {twitterListState.value?.map(item => (
                                     <div key={item.addr}>
-                                        <Avatar /> <Text ellipsis={{ suffix: 10 }}>{item.name}</Text>
+                                        <Avatar />{' '}
+                                        <Text style={{ maxWidth: 200 }} ellipsis>
+                                            {item.name}@{item.addr}
+                                        </Text>
                                         <List
                                             style={{ paddingLeft: 30 }}
                                             itemLayout='horizontal'
