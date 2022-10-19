@@ -2,9 +2,11 @@
     width: 100%;
     height: 100%;
     // overflow: hidden;
+    background-color: #f0f2f5;
 }
 .App {
     height: 100%;
+    padding-bottom: 50px;
 }
 .layout {
     .logo {
@@ -41,6 +43,7 @@
 .user-home {
     display: flex;
     padding: 20px;
+    align-items: flex-start !important;
 }
 .user-info {
     margin-right: 30px;
@@ -67,4 +70,22 @@
     .ant-modal-header {
         background-color: #6d71e4;
     }
+}
+
+.app-container {
+    display: flex;
+    border: 1px solid #999;
+    margin: 50px;
+    width: 70%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+.dtwitter-register {
+    padding-top: 50px;
+    display: flex;
+    justify-content: center;
+}
+.generator-account {
+    flex-direction: column;
 }

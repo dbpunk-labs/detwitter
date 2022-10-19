@@ -97,7 +97,7 @@ const Userhome: React.FC<{}> = memo(props => {
     const [publishTwitterVisible, setPublishTwitterVisible] = useState(false);
     return (
         <>
-            <div className='user-home'>
+            <div className='user-home app-container'>
                 <div className='user-info'>
                     <div style={{ marginBottom: 7 }}>
                         @{accountName} {ownerAddress}

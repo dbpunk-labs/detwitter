@@ -6,6 +6,7 @@ import { contractAddressAtom, ownerAddressAtom, twitterNameAtom } from '../state
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import * as db3 from '../db3';
 import { useNavigate } from 'react-router-dom';
+import Contract from './Contract.component';
 
 const { Title, Paragraph, Text, Link } = Typography;
 
@@ -44,51 +45,41 @@ const Register: React.FC<{}> = memo(props => {
     }
     const [visible, setVisible] = useState(false);
     return (
-        <div className='dtwitter-register'>
-            <Modal open title='User info' footer={null} closable={false} maskClosable={false}>
-                <Form
-                    form={form}
-                    name='basic'
-                    labelCol={{ span: 8 }}
-                    wrapperCol={{ span: 16 }}
-                    initialValues={{ remember: true }}
-                    onFinish={onFinish}
-                    autoComplete='off'
-                >
-                    <Form.Item
-                        label='Username'
-                        name='username'
-                        rules={[{ required: true, message: 'Please input your username!' }]}
-                    >
-                        <Input />
-                    </Form.Item>
-                    <Form.Item
-                        label='Gender'
-                        name='gender'
-                        rules={[{ required: true, message: 'Please select your gender!' }]}
-                    >
-                        <Radio.Group>
-                            <Radio value='male'>male</Radio>
-                            <Radio value='female'>female</Radio>
-                        </Radio.Group>
-                    </Form.Item>
-                    <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                        <Button type='primary' htmlType='submit'>
-                            Commit
-                        </Button>
-                    </Form.Item>
-                </Form>
-            </Modal>
-            <Modal
-                style={{ right: 20, margin: 0, float: 'right' }}
-                width={350}
-                open={visible}
-                onCancel={() => setVisible(false)}
-                title='DB3 network'
-                footer={null}
-                closable={false}
-                maskClosable={false}
+        <div className='dtwitter-register app-container'>
+            <Form
+                style={{ width: 300 }}
+                form={form}
+                name='basic'
+                labelCol={{ span: 8 }}
+                wrapperCol={{ span: 16 }}
+                initialValues={{ remember: true }}
+                onFinish={onFinish}
+                autoComplete='off'
             >
+                <Form.Item
+                    label='Username'
+                    name='username'
+                    rules={[{ required: true, message: 'Please input your username!' }]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label='Gender'
+                    name='gender'
+                    rules={[{ required: true, message: 'Please select your gender!' }]}
+                >
+                    <Radio.Group>
+                        <Radio value='male'>male</Radio>
+                        <Radio value='female'>female</Radio>
+                    </Radio.Group>
+                </Form.Item>
+                <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                    <Button type='primary' htmlType='submit'>
+                        Commit
+                    </Button>
+                </Form.Item>
+            </Form>
+            <Contract visible={visible} onCancel={() => setVisible(false)}>
                 <Typography>
                     <Title>Sign message</Title>
                     <Paragraph>
@@ -105,7 +96,7 @@ const Register: React.FC<{}> = memo(props => {
                         <Button onClick={() => setVisible(false)}>No</Button>
                     </Space>
                 </div>
-            </Modal>
+            </Contract>
         </div>
     );
 });

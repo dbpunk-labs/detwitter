@@ -171,6 +171,10 @@ async function singed(
     inputParams: InputParam[],
     account: any = currentAccount,
 ) {
+    if (account.isLocked) {
+        account.unlock('12345678');
+        console.log(account.isLocked);
+    }
     const api = await apiPromise;
     const fromAcct = await getFromAcct(account);
     const reqIdIndex = paramFields.findIndex(item => item.name === 'reqId');

@@ -7,6 +7,7 @@ import Account from './components/Account.component';
 import Home from './components/Home.component';
 import Register from './components/Register.component';
 import Userhome from './components/UserHome.component';
+import Authorization from './components/Authorization.component';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { allAccountAtom, ownerAddressAtom } from './state';
 
@@ -17,7 +18,7 @@ const { Header, Content, Footer } = Layout;
 function App() {
     return (
         <div className='App'>
-            <Account />
+            {/* <Account /> */}
             <Layout className='layout' style={{ height: '100%' }}>
                 {/* <Header className='header'>
                     <div className='logo'>Dtwitter</div>
@@ -27,6 +28,7 @@ function App() {
                     <Router>
                         <Routes>
                             <Route path='/' element={<Home />}></Route>
+                            <Route path='/authorization' element={<Authorization />}></Route>
                             <Route path='/register' element={<Register />} />
                             <Route path='/user' element={<Userhome />} />
                         </Routes>
@@ -57,6 +59,7 @@ export default () => {
             })
             .then((data: any) => {
                 setAllAccount(data);
+                console.log(data);
                 if (ownerAddress) {
                     db3.setCurrentAccount(keyring.getPair(ownerAddress));
                 }

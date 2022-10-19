@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Select, Avatar, Space, Modal } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+import { Select, Modal } from 'antd';
 import * as db3 from '../db3';
 import { keyring } from '@polkadot/ui-keyring';
 import { useRecoilValue, useRecoilState } from 'recoil';

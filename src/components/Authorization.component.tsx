@@ -3,6 +3,7 @@ import React, { memo, useState } from 'react';
 import { Button, Modal, Typography, Space, message } from 'antd';
 import { useAsyncFn, useStateWithHistory } from 'react-use';
 import { keyring } from '@polkadot/ui-keyring';
+import { mnemonicGenerate } from '@polkadot/util-crypto';
 import * as db3 from '../db3';
 import { useRecoilValue } from 'recoil';
 import { delegateAddressAtom, ownerAddressAtom, appEllipsisAddressAtom, contractEllipsisAddressAtom } from '../state';
@@ -12,7 +13,7 @@ import Contract from './Contract.component';
 
 const { Title, Paragraph, Text } = Typography;
 
-const Register: React.FC<{}> = memo(props => {
+const Authorization: React.FC<{}> = memo(props => {
     const [visible, setVisible] = useState(false);
     const ownerAddress = useRecoilValue(ownerAddressAtom);
     const delegateAddress = useRecoilValue(delegateAddressAtom);
@@ -45,12 +46,16 @@ const Register: React.FC<{}> = memo(props => {
         message.success('Authorization succeeded!');
         navigate('/register');
     }, [ownerAddress, delegateAddress]);
+
     return (
         <>
-            <div className='register'>
+            <div className='register app-container'>
                 <Button type='primary' onClick={() => setVisible(true)}>
                     Register as DT user
                 </Button>
+                {/* <Button type='primary' onClick={() => generatorAccount()}>
+                    Gennerator DB3 account
+                </Button> */}
             </div>
             <Contract visible={visible} onCancel={setVisible}>
                 <Typography>
@@ -92,4 +97,4 @@ const Register: React.FC<{}> = memo(props => {
         </>
     );
 });
-export default Register;
+export default Authorization;
