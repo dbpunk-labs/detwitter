@@ -123,7 +123,9 @@ const Userhome: React.FC<{}> = memo(props => {
                                     {followingState.value?.map(item => (
                                         <div key={item.addr} style={{ marginBottom: 10 }}>
                                             <Avatar />
-                                            <Text ellipsis={{ suffix: 10 }}>{item.name}</Text>
+                                            <Text style={{ maxWidth: 100 }} ellipsis>
+                                                {item.name}
+                                            </Text>
                                         </div>
                                     ))}
                                 </Card>
@@ -148,7 +150,9 @@ const Userhome: React.FC<{}> = memo(props => {
                                     {followerState.value?.map(item => (
                                         <div key={item.addr} style={{ marginBottom: 10 }}>
                                             <Avatar />
-                                            <Text ellipsis={{ suffix: 10 }}>{item.name}</Text>
+                                            <Text style={{ maxWidth: 100 }} ellipsis>
+                                                {item.name}
+                                            </Text>
                                         </div>
                                     ))}
                                 </Card>
@@ -171,7 +175,11 @@ const Userhome: React.FC<{}> = memo(props => {
                                         <List.Item>
                                             <>
                                                 <List.Item.Meta
-                                                    title={<Text ellipsis={{ suffix: 10 }}>{item.user_name}</Text>}
+                                                    title={
+                                                        <Text style={{ maxWidth: 100 }} ellipsis>
+                                                            {item.user_name}
+                                                        </Text>
+                                                    }
                                                 />
                                                 <Button
                                                     style={{ width: 90 }}
@@ -220,7 +228,10 @@ const Userhome: React.FC<{}> = memo(props => {
                             <Spin spinning={twitterListState.loading}>
                                 {twitterListState.value?.map(item => (
                                     <div key={item.addr}>
-                                        <Avatar /> <Text ellipsis={{ suffix: 10 }}>{item.name}</Text>
+                                        <Avatar />{' '}
+                                        <Text style={{ maxWidth: 100 }} ellipsis>
+                                            {item.name}
+                                        </Text>
                                         <List
                                             style={{ paddingLeft: 30 }}
                                             itemLayout='horizontal'
