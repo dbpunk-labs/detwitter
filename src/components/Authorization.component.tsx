@@ -49,7 +49,7 @@ const Authorization: React.FC<{}> = memo(props => {
     return (
         <>
             <div className='register app-container'>
-                <Button type='primary' onClick={() => setVisible(true)}>
+                <Button size='large' type='primary' onClick={() => setVisible(true)}>
                     Register as DT user
                 </Button>
                 {/* <Button type='primary' onClick={() => generatorAccount()}>

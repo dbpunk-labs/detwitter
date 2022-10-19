@@ -49,6 +49,7 @@ const retrieveChainInfo = async (api: any) => {
     };
 };
 
+let accountPromise: Promise<any>;
 export async function loadAccounts(appName: string) {
     async function getAccounts(api: any) {
         await web3Enable(appName);
@@ -67,7 +68,7 @@ export async function loadAccounts(appName: string) {
         return keyringOptions;
     }
 
-    return new Promise(async (resolve, reject) => {
+    return (accountPromise ??= new Promise(async (resolve, reject) => {
         function loopApi() {
             if (!apiPromise) {
                 setTimeout(loopApi, 0);
@@ -80,7 +81,7 @@ export async function loadAccounts(appName: string) {
             }
         }
         loopApi();
-    });
+    }));
 }
 
 let currentAccount: any;

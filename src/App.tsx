@@ -42,13 +42,7 @@ function App() {
 
 export default () => {
     const [ready, setReady] = useState(false);
-    const setAllAccount = useSetRecoilState(allAccountAtom);
     const ownerAddress = useRecoilValue(ownerAddressAtom);
-    useEffect(() => {
-        if (ready && ownerAddress) {
-               db3.setCurrentAccount(keyring.getPair(ownerAddress));
-        }
-    }, [ready, ownerAddress]);
     useEffect(() => {
         db3.init({
             appName: 'detwitter',
@@ -58,8 +52,6 @@ export default () => {
                 db3.loadAccounts('detwitter');
             })
             .then(() => {
-                //setAllAccount(data);
-                //console.log(data);
                 if (ownerAddress) {
                     db3.setCurrentAccount(keyring.getPair(ownerAddress));
                 }
