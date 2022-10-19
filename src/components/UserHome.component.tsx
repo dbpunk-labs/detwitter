@@ -9,6 +9,7 @@ import * as db3 from '../db3';
 import _ from 'lodash';
 import Contract from './Contract.component';
 import moment from 'moment';
+import { EllipsisMiddle } from './Contract.component';
 
 const { Title, Paragraph, Text } = Typography;
 
@@ -122,7 +123,7 @@ const Userhome: React.FC<{}> = memo(props => {
                                     {followingState.value?.map(item => (
                                         <div key={item.addr} style={{ marginBottom: 10 }}>
                                             <Avatar />
-                                            {item.name}
+                                            <Text ellipsis={{ suffix: 10 }}>{item.name}</Text>
                                         </div>
                                     ))}
                                 </Card>
@@ -147,7 +148,7 @@ const Userhome: React.FC<{}> = memo(props => {
                                     {followerState.value?.map(item => (
                                         <div key={item.addr} style={{ marginBottom: 10 }}>
                                             <Avatar />
-                                            {item.name}
+                                            <Text ellipsis={{ suffix: 10 }}>{item.name}</Text>
                                         </div>
                                     ))}
                                 </Card>
@@ -169,7 +170,9 @@ const Userhome: React.FC<{}> = memo(props => {
                                     renderItem={item => (
                                         <List.Item>
                                             <>
-                                                <List.Item.Meta title={<a>{item.user_name}</a>} />
+                                                <List.Item.Meta
+                                                    title={<Text ellipsis={{ suffix: 10 }}>{item.user_name}</Text>}
+                                                />
                                                 <Button
                                                     style={{ width: 90 }}
                                                     type='primary'
@@ -217,7 +220,7 @@ const Userhome: React.FC<{}> = memo(props => {
                             <Spin spinning={twitterListState.loading}>
                                 {twitterListState.value?.map(item => (
                                     <div key={item.addr}>
-                                        <Avatar /> {item.name}
+                                        <Avatar /> <Text ellipsis={{ suffix: 10 }}>{item.name}</Text>
                                         <List
                                             style={{ paddingLeft: 30 }}
                                             itemLayout='horizontal'
