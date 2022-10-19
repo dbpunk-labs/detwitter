@@ -3,20 +3,18 @@ import React, { memo, useState } from 'react';
 import { Button, Space, List, Avatar, Input, message, Card, Spin, Modal, Typography } from 'antd';
 import { ReloadOutlined } from '@ant-design/icons';
 import { useRecoilValue } from 'recoil';
-import { accountNameAtom, allUserSelector, contractAddressAtom, ownerAddressAtom, twitterNameAtom } from '../state';
+import { contractAddressAtom, ownerAddressAtom, twitterNameAtom } from '../state';
 import { useAsyncFn } from 'react-use';
 import * as db3 from '../db3';
 import _ from 'lodash';
 import Contract from './Contract.component';
 import moment from 'moment';
-import { EllipsisMiddle } from './Contract.component';
 
 const { Title, Paragraph, Text } = Typography;
 
 const Userhome: React.FC<{}> = memo(props => {
     const ownerAddress = useRecoilValue(ownerAddressAtom);
     const contractAddress = useRecoilValue(contractAddressAtom);
-    const accountName = useRecoilValue(accountNameAtom);
     const twitterName = useRecoilValue(twitterNameAtom);
     const [userContent, setUserContent] = useState('');
 
@@ -71,7 +69,7 @@ const Userhome: React.FC<{}> = memo(props => {
     const [twitterListState, loadTwitterList] = useAsyncFn(async () => {
         const { data } = await db3.callContract(ownerAddress, contractAddress, {
             method: 'get_following_tweets_with_addr',
-            args: [20, ownerAddress, accountName],
+            args: [20, ownerAddress, twitterName],
         });
         return data;
     });
@@ -101,7 +99,7 @@ const Userhome: React.FC<{}> = memo(props => {
             <div className='user-home app-container'>
                 <div className='user-info'>
                     <div style={{ marginBottom: 7 }}>
-                     <Avatar style={{ backgroundColor: '#D9D9D9', verticalAlign: 'middle' }} size="large">
+                        <Avatar style={{ backgroundColor: '#D9D9D9', verticalAlign: 'middle' }} size="large">
                             {twitterName}
                         </Avatar>
                         @{ownerAddress}

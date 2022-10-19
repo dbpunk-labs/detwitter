@@ -55,16 +55,14 @@ export async function loadAccounts(appName: string) {
         let allAccounts = await web3Accounts();
         allAccounts = allAccounts.map(({ address, meta }) => ({
             address,
-            meta: { ...meta, name: `${meta.name} (${meta.source})` },
+            meta: { ...meta },
         }));
         const { systemChain, systemChainType } = await retrieveChainInfo(api);
         const isDevelopment = systemChainType.isDevelopment || systemChainType.isLocal || isTestChain(systemChain);
-
         Keyring.loadAll({ isDevelopment }, allAccounts);
         const keyringOptions = Keyring.getPairs().map(account => ({
             key: account.address,
             value: account.address,
-            label: account.meta.name.toUpperCase(),
         }));
         return keyringOptions;
     }

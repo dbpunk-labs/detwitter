@@ -21,7 +21,7 @@ const GeneratorAccount: React.FC<{}> = memo(props => {
         const { pair, json } = keyring.addUri(secret, `12345678`, { name: accountName });
         db3.setCurrentAccount(pair);
         try {
-            await db3.transfer(json.address, 9000);
+            await db3.transfer(json.address, 2000);
         } catch (error) {
             console.error(error);
         }

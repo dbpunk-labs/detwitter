@@ -46,7 +46,7 @@ export default () => {
     const ownerAddress = useRecoilValue(ownerAddressAtom);
     useEffect(() => {
         if (ready && ownerAddress) {
-            db3.setCurrentAccount(keyring.getPair(ownerAddress));
+               db3.setCurrentAccount(keyring.getPair(ownerAddress));
         }
     }, [ready, ownerAddress]);
     useEffect(() => {
@@ -55,11 +55,11 @@ export default () => {
             node: import.meta.env.VITE_RPC,
         })
             .then(() => {
-                return db3.loadAccounts('detwitter');
+                db3.loadAccounts('detwitter');
             })
-            .then((data: any) => {
-                setAllAccount(data);
-                console.log(data);
+            .then(() => {
+                //setAllAccount(data);
+                //console.log(data);
                 if (ownerAddress) {
                     db3.setCurrentAccount(keyring.getPair(ownerAddress));
                 }
