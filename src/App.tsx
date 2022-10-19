@@ -42,13 +42,12 @@ function App() {
 
 export default () => {
     const [ready, setReady] = useState(false);
-    const setAllAccount = useSetRecoilState(allAccountAtom);
     const ownerAddress = useRecoilValue(ownerAddressAtom);
-    useEffect(() => {
-        if (ready && ownerAddress) {
-            db3.setCurrentAccount(keyring.getPair(ownerAddress));
-        }
-    }, [ready, ownerAddress]);
+    // useEffect(() => {
+    //     if (ready && ownerAddress) {
+    //         db3.setCurrentAccount(keyring.getPair(ownerAddress));
+    //     }
+    // }, [ready, ownerAddress]);
     useEffect(() => {
         db3.init({
             appName: 'detwitter',
@@ -57,9 +56,7 @@ export default () => {
             .then(() => {
                 return db3.loadAccounts('detwitter');
             })
-            .then((data: any) => {
-                setAllAccount(data);
-                console.log(data);
+            .then(() => {
                 if (ownerAddress) {
                     db3.setCurrentAccount(keyring.getPair(ownerAddress));
                 }

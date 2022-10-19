@@ -48,13 +48,14 @@ const retrieveChainInfo = async (api: any) => {
     };
 };
 
+let accountPromise: Promise<any>;
 export async function loadAccounts(appName: string) {
     async function getAccounts(api: any) {
         await web3Enable(appName);
         let allAccounts = await web3Accounts();
         allAccounts = allAccounts.map(({ address, meta }) => ({
             address,
-            meta: { ...meta, name: `${meta.name} (${meta.source})` },
+            meta: { ...meta, name: `${meta?.name} (${meta?.source})` },
         }));
         const { systemChain, systemChainType } = await retrieveChainInfo(api);
         const isDevelopment = systemChainType.isDevelopment || systemChainType.isLocal || isTestChain(systemChain);
@@ -63,12 +64,12 @@ export async function loadAccounts(appName: string) {
         const keyringOptions = Keyring.getPairs().map(account => ({
             key: account.address,
             value: account.address,
-            label: account.meta.name.toUpperCase(),
+            label: account.meta?.name.toUpperCase(),
         }));
         return keyringOptions;
     }
 
-    return new Promise(async (resolve, reject) => {
+    return (accountPromise ??= new Promise(async (resolve, reject) => {
         function loopApi() {
             if (!apiPromise) {
                 setTimeout(loopApi, 0);
@@ -81,7 +82,7 @@ export async function loadAccounts(appName: string) {
             }
         }
         loopApi();
-    });
+    }));
 }
 
 let currentAccount: any;
