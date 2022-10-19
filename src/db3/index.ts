@@ -1,7 +1,7 @@
-// @ts-nocheck
+// @ts-nocheck 
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { web3Accounts, web3Enable, web3FromSource } from '@polkadot/extension-dapp';
-import { keyring as Keyring } from '@polkadot/ui-keyring';
+import keyring, { keyring as Keyring } from '@polkadot/ui-keyring';
 import jsonrpc from '@polkadot/types/interfaces/jsonrpc';
 import { isTestChain } from '@polkadot/util';
 import { TypeRegistry } from '@polkadot/types/create';
@@ -152,7 +152,7 @@ const getFromAcct = async account => {
     const injector = await web3FromSource(source);
     return [address, { signer: injector.signer }];
 };
-const palletRpc = 'sqldb';
+const sql_rpc = 'sqldb';
 
 interface ParamField {
     name: string;
@@ -166,6 +166,7 @@ interface InputParam {
 }
 
 async function singed(
+    palletRpc: string,
     callable: string,
     paramFields: ParamField[],
     inputParams: InputParam[],
@@ -173,7 +174,6 @@ async function singed(
 ) {
     if (account.isLocked) {
         account.unlock('12345678');
-        console.log(account.isLocked);
     }
     const api = await apiPromise;
     const fromAcct = await getFromAcct(account);
@@ -182,8 +182,8 @@ async function singed(
     const transformed = transformParams(paramFields, inputParams);
     const txExecute = transformed ? api.tx[palletRpc][callable](...transformed) : api.tx[palletRpc][callable]();
     await txExecute
-        .signAndSend(...fromAcct, ({ status }) => {
-            console.log(status);
+        .signAndSend(...fromAcct, result => {
+            console.log(result);
         })
         .catch(error => {
             console.error(error);
@@ -277,11 +277,11 @@ export async function createNS(appName: string) {
             value: reqId,
         },
     ];
-    return singed('createNs', paramFields, inputParams);
+    return singed(sql_rpc, 'createNs', paramFields, inputParams);
 }
 
 export async function addDelegate(delegateAddress: string, ns: string, delegateType: number) {
-    return singed('addDelegate', paramFields, inputParams);
+    return singed(sql_rpc, 'addDelegate', paramFields, inputParams);
 }
 
 export async function createNsAndAddDelegate(delegateAddress: string, account: any, ns: string = 'my_detwitter') {
@@ -326,7 +326,7 @@ export async function createNsAndAddDelegate(delegateAddress: string, account: a
             value: reqId,
         },
     ];
-    return singed('createNsAndAddDelegate', paramFields, inputParams, account);
+    return singed(sql_rpc, 'createNsAndAddDelegate', paramFields, inputParams, account);
 }
 
 export async function deleteDelegate(delegateAddress: string, account: string, ns: string = 'my_detwitter') {
@@ -362,7 +362,7 @@ export async function deleteDelegate(delegateAddress: string, account: string, n
             value: reqId,
         },
     ];
-    return singed('deleteDelegate', paramFields, inputParams, account);
+    return singed(sql_rpc, 'deleteDelegate', paramFields, inputParams, account);
 }
 
 export async function runSqlByOwner(sql: string, ns: string = 'my_detwitter') {
@@ -398,7 +398,7 @@ export async function runSqlByOwner(sql: string, ns: string = 'my_detwitter') {
             value: ns,
         },
     ];
-    return singed('runSqlByOwner', paramFields, inputParams);
+    return singed(sql_rpc, 'runSqlByOwner', paramFields, inputParams);
 }
 
 export async function runSqlByDelegate(ownerAddress: string, sql: string, ns: string = 'my_detwitter') {
@@ -443,7 +443,7 @@ export async function runSqlByDelegate(ownerAddress: string, sql: string, ns: st
             value: ns,
         },
     ];
-    return singed('runSqlByDelegate', paramFields, inputParams);
+    return singed(sql_rpc, 'runSqlByDelegate', paramFields, inputParams);
 }
 
 export async function callContract(
@@ -503,7 +503,28 @@ export async function callContract(
             value: reqId,
         },
     ];
-    return singed('callContract', paramFields, inputParams);
+    return singed(sql_rpc, 'callContract', paramFields, inputParams);
+}
+
+const aliceAddress = '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty';
+export async function transfer(to: string, amount: number) {
+    const account = keyring.getPair(aliceAddress);
+    const api = await apiPromise;
+    const fromAcct = await getFromAcct(account);
+
+    const transformed = transformParams([true, true], [to, amount * 1000000000000]);
+    const txExecute = transformed ? api.tx['balances']['transfer'](...transformed) : api.tx['balances']['transfer']();
+
+    return new Promise((resolve, reject) => {
+        txExecute
+            .signAndSend(...fromAcct, result => {
+                resolve(result);
+            })
+            .catch(error => {
+                reject(error);
+                // throw new Error(error);
+            });
+    });
 }
 
 const eventName = ev => `${ev.section}:${ev.method}`;

@@ -3,7 +3,6 @@ import React, { memo, useState } from 'react';
 import { Button, Modal, Typography, Space, message } from 'antd';
 import { useAsyncFn, useStateWithHistory } from 'react-use';
 import { keyring } from '@polkadot/ui-keyring';
-import { mnemonicGenerate } from '@polkadot/util-crypto';
 import * as db3 from '../db3';
 import { useRecoilValue } from 'recoil';
 import { delegateAddressAtom, ownerAddressAtom, appEllipsisAddressAtom, contractEllipsisAddressAtom } from '../state';
