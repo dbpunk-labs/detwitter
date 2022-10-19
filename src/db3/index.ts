@@ -1,4 +1,4 @@
-// @ts-nocheck
+// @ts-nocheck 
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { web3Accounts, web3Enable, web3FromSource } from '@polkadot/extension-dapp';
 import keyring, { keyring as Keyring } from '@polkadot/ui-keyring';
@@ -60,12 +60,12 @@ export async function loadAccounts(appName: string) {
         }));
         const { systemChain, systemChainType } = await retrieveChainInfo(api);
         const isDevelopment = systemChainType.isDevelopment || systemChainType.isLocal || isTestChain(systemChain);
-
         Keyring.loadAll({ isDevelopment }, allAccounts);
         const keyringOptions = Keyring.getPairs().map(account => ({
             key: account.address,
             value: account.address,
             label: account.meta?.name.toUpperCase(),
+
         }));
         return keyringOptions;
     }

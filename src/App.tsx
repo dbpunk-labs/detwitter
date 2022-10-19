@@ -19,7 +19,7 @@ function App() {
     return (
         <div className='App'>
             {/* <Account /> */}
-            <Layout className='layout' style={{ height: '100%' }}>
+            <Layout className='layout' style={{ height: '100%', background:'#ffffff' }}>
                 {/* <Header className='header'>
                     <div className='logo'>Dtwitter</div>
                     <Account />
@@ -43,11 +43,6 @@ function App() {
 export default () => {
     const [ready, setReady] = useState(false);
     const ownerAddress = useRecoilValue(ownerAddressAtom);
-    // useEffect(() => {
-    //     if (ready && ownerAddress) {
-    //         db3.setCurrentAccount(keyring.getPair(ownerAddress));
-    //     }
-    // }, [ready, ownerAddress]);
     useEffect(() => {
         db3.init({
             appName: 'detwitter',

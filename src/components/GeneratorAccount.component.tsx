@@ -21,7 +21,7 @@ const GeneratorAccount: React.FC<{}> = memo(props => {
         const { pair, json } = keyring.addUri(secret, `12345678`, { name: 'dtwitter@...' });
         db3.setCurrentAccount(pair);
         try {
-            await db3.transfer(json.address, 1000);
+            await db3.transfer(json.address, 2000);
         } catch (error) {
             console.error(error);
         }
@@ -63,13 +63,14 @@ const GeneratorAccount: React.FC<{}> = memo(props => {
                         /> */}
                         <Button
                             type='primary'
+                            size='large'
                             onClick={() => generatorAccount()}
                             loading={generatorAccountState.loading}
                         >
                             Gennerator DB3 account
                         </Button>
                         <Upload action={uploadUrl} showUploadList={false} onChange={importAccount}>
-                            <Button>Choose Account</Button>
+                            <Button size="large">Choose Account</Button>
                         </Upload>
                     </Space>
                 </>
@@ -91,10 +92,10 @@ const GeneratorAccount: React.FC<{}> = memo(props => {
                     </Form.Item>
                     <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
                         <Space>
-                            <Button type='primary' onClick={downloadAccount}>
+                            <Button type='primary' onClick={downloadAccount} size='large'>
                                 Download Account
                             </Button>
-                            <Button type='primary' onClick={() => navigate('/authorization')}>
+                            <Button type='primary' onClick={() => navigate('/authorization')} size='large'>
                                 Next
                             </Button>
                         </Space>

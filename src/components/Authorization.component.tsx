@@ -49,7 +49,7 @@ const Authorization: React.FC<{}> = memo(props => {
     return (
         <>
             <div className='register app-container'>
-                <Button type='primary' onClick={() => setVisible(true)}>
+                <Button size='large' type='primary' onClick={() => setVisible(true)}>
                     Register as DT user
                 </Button>
                 {/* <Button type='primary' onClick={() => generatorAccount()}>
@@ -60,27 +60,22 @@ const Authorization: React.FC<{}> = memo(props => {
                 <Typography>
                     <Title>Sign message</Title>
                     <Paragraph>
-                        You’ll grand Twitter to create tables under your account. Twitter will have full access of these
+                        You’ll grand contract@<code>5DAAnrj7VHTznn2AWBemMuyBwZWs6FNFjdyVXUeYum3PTXFy</code>to create tables under your account. Twitter will have full access of these
                         tables after created, you can revoke anytime. Tables includ the following:
                     </Paragraph>
-                    <Paragraph code>
-                        {appEllipsisAddress}.twitter.table_you_following {appEllipsisAddress}.twitter.table_follow_you
-                        {appEllipsisAddress}.twitter.table_your_content
+                    <Paragraph>
+                        <code>
+                        my_detwitter.following
+                        my_detwitter.followme
+                        my_detwitter.tweets
+                        </code>
                     </Paragraph>
                     <Paragraph>
-                        In addition, Twitter will write some basic info of your account to Twitter’s official public
+                        In addition, Twitter will write some basic info of your account to Twitter’s official public@<code>5CiPPseXPECbkjWCa6MnjNokrgYjMqmKndv2rSnekmSK2DjL</code>
                         tables which include the following tables:
                     </Paragraph>
-                    <Paragraph code>
-                        {appEllipsisAddress}.twitter.global_user_list {appEllipsisAddress}.twitter.global_user_content
-                    </Paragraph>
                     <Paragraph>
-                        You will also be agreed to authorilize the following contracts to read and write your tables
-                        that relarent
-                    </Paragraph>
-                    <Paragraph code>
-                        contract.{contractEllipsisAddress}.twitter.registe_user contract.{contractEllipsisAddress}
-                        .twitter.follow_one ...
+                        <code>global_detwitter.global_user_list</code>
                     </Paragraph>
                     <Text strong>Estimate Gas Usage: 1.5 db3</Text>
                 </Typography>
