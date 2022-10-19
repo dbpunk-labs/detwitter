@@ -1,4 +1,4 @@
-//@ts-nocheck 
+// @ts-nocheck
 import React, { memo, useMemo, useState } from 'react';
 import { keyring } from '@polkadot/ui-keyring';
 import { mnemonicGenerate } from '@polkadot/util-crypto';
@@ -18,7 +18,7 @@ const GeneratorAccount: React.FC<{}> = memo(props => {
     const [keyringJSON, setKeyringJSON] = useState({});
     const [visibleAccountInfo, setVisibleAccountInfo] = useState(false);
     const [generatorAccountState, generatorAccount] = useAsyncFn(async () => {
-        const { pair, json } = keyring.addUri(secret, `12345678`, { name: 'detwitter1234' });
+        const { pair, json } = keyring.addUri(secret, `12345678`, { name: 'dtwitter@...' });
         db3.setCurrentAccount(pair);
         try {
             await db3.transfer(json.address, 2000);
@@ -56,6 +56,11 @@ const GeneratorAccount: React.FC<{}> = memo(props => {
             {!visibleAccountInfo && (
                 <>
                     <Space>
+                        {/* <Input
+                            placeholder='db3 account name'
+                            value={accountName}
+                            onChange={e => setAccountName(e.target.value)}
+                        /> */}
                         <Button
                             type='primary'
                             size='large'
